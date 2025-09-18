@@ -23,7 +23,20 @@ export function Header() {
   return (
     <header className="w-full border-b border-black/10 dark:border-white/15">
       <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <div className="font-semibold">Arbitrum IRL</div>
+        <div className="flex items-center gap-8">
+          <div className="font-semibold text-lg">VaultFlow</div>
+          <nav className="hidden md:flex items-center gap-6">
+            <a href="/" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+              Home
+            </a>
+            <a href="/vaults" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+              Vaults
+            </a>
+            <a href="/profile" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+              Profile
+            </a>
+          </nav>
+        </div>
         <div className="flex items-center gap-3">
           {authenticated ? (
             <>
