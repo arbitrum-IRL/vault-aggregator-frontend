@@ -2,7 +2,7 @@
 
 import { useWallet } from "@/hooks/useWallet";
 import { UserTransaction } from "@/types/vault";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 // Mock transaction data
 const mockTransactions: UserTransaction[] = [
@@ -41,6 +41,18 @@ const mockTransactions: UserTransaction[] = [
 export default function ProfilePage() {
   const { authenticated, address, chainId, usdcBalance } = useWallet();
   const [transactions] = useState<UserTransaction[]>(mockTransactions);
+
+  const chainName = useMemo(() => {
+    if (!chainId) return "Unknown";
+    if (chainId === 42161) return "Arbitrum One";
+    return `Chain ID: ${chainId}`;
+  }, [chainId]);
+
+  const usdcLabel = useMemo(() => usdcBalance?.symbol ?? "USDC", [usdcBalance]);
+  const usdcFormatted = useMemo(() => {
+    const value = Number(usdcBalance?.formatted ?? 0);
+    return new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+  }, [usdcBalance]);
 
   if (!authenticated) {
     return (
@@ -96,13 +108,13 @@ export default function ProfilePage() {
             <div>
               <p className="text-sm text-gray-500 mb-1">Network</p>
               <p className="text-gray-900 dark:text-white">
-                {chainId === 42161 ? 'Arbitrum One' : `Chain ID: ${chainId}`}
+                {chainName}
               </p>
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">USDC Balance</p>
               <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                {usdcBalance ? `${Number(usdcBalance.formatted).toFixed(2)} USDC` : '0.00 USDC'}
+                {usdcFormatted} {usdcLabel}
               </p>
             </div>
             <div>
